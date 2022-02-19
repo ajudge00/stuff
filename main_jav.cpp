@@ -84,9 +84,6 @@ void fileRead(vector<Dictionary> &v){
 
 void fileWrite(vector<Dictionary> &v){
     char moreWords;
-    vector<string> newHun;
-    vector<string> newEng;
-    vector<string> newSpa;
     do{
         string userWordAdd;
         cout<<"Milyen szot szeretnel hozzaadni? "<<endl;
@@ -112,46 +109,48 @@ void fileWrite(vector<Dictionary> &v){
             cout<<"Milyen nyelvu ez a szo? (a/m/s)"<<endl;
             cin>>addLang;
 
+            Dictionary tmp;
 
             if(addLang=='a'){
                 string meaningHun;
                 cout<<"Es mit jelent ez magyarul? Ha nem tudod, irj *-ot!"<<endl;
                 cin>>meaningHun;
-                newHun.push_back(meaningHun);
+                tmp.wordHun=meaningHun;
 
                 string meaningSpa;
                 cout<<"Es spanyolul? Ha nem tudod, irj *-ot!"<<endl;
                 cin>>meaningSpa;
-                newSpa.push_back(meaningSpa);
+                tmp.wordSpa=meaningSpa;
 
-                newEng.push_back(userWordAdd);
+                tmp.wordEng=userWordAdd;
             }
             else if(addLang=='m'){
                 string meaningEng;
                 cout<<"Es mit jelent ez angolul? Ha nem tudod, irj *-ot!"<<endl;
                 cin>>meaningEng;
-                newEng.push_back(meaningEng);
+                tmp.wordEng=meaningEng;
 
                 string meaningSpa;
                 cout<<"Es spanyolul? Ha nem tudod, irj *-ot!"<<endl;
                 cin>>meaningSpa;
-                newSpa.push_back(meaningSpa);
+                tmp.wordSpa=meaningSpa;
 
-                newHun.push_back(userWordAdd);
+                tmp.wordHun=userWordAdd;
             }
             else if (addLang=='s'){
                 string meaningEng;
                 cout<<"Es mit jelent ez angolul? Ha nem tudod, irj *-ot!"<<endl;
                 cin>>meaningEng;
-                newEng.push_back(meaningEng);
+                tmp.wordEng=meaningEng;
 
                 string meaningHun;
                 cout<<"Es magyarul? Ha nem tudod, irj *-ot!"<<endl;
                 cin>>meaningHun;
-                newHun.push_back(meaningHun);
+                tmp.wordHun=meaningHun;
 
-                newSpa.push_back(userWordAdd);
+                tmp.wordSpa=userWordAdd;
             }
+            v.push_back(tmp);
         }
         cout<<"Szeretnel meg szot hozzaadni? (y/n)"<<endl;
         cin>>moreWords;
@@ -159,11 +158,12 @@ void fileWrite(vector<Dictionary> &v){
 
     ofstream dict2("dict.txt");
     for(int i=0; i<v.size(); i++){
-        dict2<<v[i].wordHun<<" "<<v[i].wordEng<<" "<<v[i].wordSpa<<endl;
+        if(i<v.size()){
+            dict2<<v[i].wordHun<<" "<<v[i].wordEng<<" "<<v[i].wordSpa<<endl;
+        }else{
+            dict2<<v[i].wordHun<<" "<<v[i].wordEng<<" "<<v[i].wordSpa;
+        }
     }
-    for(int i=1; i<newEng.size(); i++){
-        dict2<<newHun[i]<<" "<<newEng[i]<<" "<<newSpa[i]<<endl;
-    }
-    dict2<<newHun[0]<<" "<<newEng[0]<<" "<<newSpa[0];
+
     dict2.close();
 }
