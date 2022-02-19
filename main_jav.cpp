@@ -158,7 +158,7 @@ void fileWrite(vector<Dictionary> &v){
 
     ofstream dict2("dict.txt");
     for(int i=0; i<v.size(); i++){
-        if(i<v.size()){
+        if(i<v.size()-1){
             dict2<<v[i].wordHun<<" "<<v[i].wordEng<<" "<<v[i].wordSpa<<endl;
         }else{
             dict2<<v[i].wordHun<<" "<<v[i].wordEng<<" "<<v[i].wordSpa;
