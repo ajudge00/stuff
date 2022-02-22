@@ -4,10 +4,13 @@
 #include <string>
 #include <cstdlib>
 #include <cstdio>
+#include <string.h>
 //#include <windows.h>
 //#pragma execution_character_set("utf-8")
 
 using namespace std;
+
+string userWord;
 
 struct Dictionary{
     string wordEng;
@@ -33,6 +36,7 @@ int main()
     readOnly(v);
 
     system("cls");
+
     if(userChoice==1){
         fileRead(v);
     }else{
@@ -53,38 +57,62 @@ void readOnly(vector<Dictionary> &v){
     dict.close();
 }
 
-void fileRead(vector<Dictionary> &v){
-    string userWord;
-    cout<<"Ird be a keresendo szot!"<<endl;
-    cin>>userWord;
+int SimilarWord(vector<Dictionary> &v, string userWord){
+    /*int counter[v.size()];
+    vector<string> sim;
 
-    bool wordFound;
     for(int i=0; i<v.size(); i++){
-        if(userWord==v[i].wordHun){
-            wordFound=1;
-            cout<<"A(z) '"<<userWord<<"' szo angolul: "<<v[i].wordEng<<endl;
-            cout<<"Es spanyolul: "<<v[i].wordSpa<<endl;
-        }else if(userWord==v[i].wordEng){
-            wordFound=1;
-            cout<<"A(z) '"<<userWord<<"' szo magyarul: "<<v[i].wordHun<<endl;
-            cout<<"Es spanyolul: "<<v[i].wordSpa<<endl;
-        }else if(userWord==v[i].wordSpa){
-            wordFound=1;
-            cout<<"A(z) '"<<userWord<<"' szo magyarul: "<<v[i].wordHun<<endl;
-            cout<<"Es angolul: "<<v[i].wordEng<<endl;
+        for(int j=0; j<userWord.size(); j++){
+            for(int k=0; k<v[i].wordEng.size(); k++){
+                if(userWord.substr(j,1)==v[i].wordEng.substr(k,1)){
+                    counter[i]++;
+                }
+            }
         }
+    }*/
+}
+
+void fileRead(vector<Dictionary> &v){
+    char moreSearch='y';
+
+    while(moreSearch=='y'){
+        cout<<"Ird be a keresendo szot!"<<endl;
+        cin>>userWord;
+        cout<<endl;
+
+        bool wordFound;
+        for(int i=0; i<v.size(); i++){
+            if(userWord==v[i].wordHun){
+                wordFound=1;
+                cout<<"A(z) '"<<userWord<<"' szo angolul: "<<v[i].wordEng<<endl;
+                cout<<"Es spanyolul: "<<v[i].wordSpa<<endl;
+            }else if(userWord==v[i].wordEng){
+                wordFound=1;
+                cout<<"A(z) '"<<userWord<<"' szo magyarul: "<<v[i].wordHun<<endl;
+                cout<<"Es spanyolul: "<<v[i].wordSpa<<endl;
+            }else if(userWord==v[i].wordSpa){
+                wordFound=1;
+                cout<<"A(z) '"<<userWord<<"' szo magyarul: "<<v[i].wordHun<<endl;
+                cout<<"Es angolul: "<<v[i].wordEng<<endl;
+            }
+        }
+
+        if(wordFound!=1){
+            cout<<"A szo nem talalhato az adatbazisban."<<endl;
+            cout<<"Hasonlo szavak: ";
+            SimilarWord(v, userWord);
+        }
+
+        cout<<endl<<"Szeretnel masik szot megkeresni? (y/n)"<<endl;
+        cin>>moreSearch;
+        system("cls");
     }
 
-    char wordAdd;
-    if(wordFound!=1){
-        cout<<"A szo nem talalhato az adatbazisban."<<endl;
-        cin>>wordAdd;
-    }
 }
 
 void fileWrite(vector<Dictionary> &v){
-    char moreWords;
-    do{
+    char moreWords='y';
+    while(moreWords=='y'){
         string userWordAdd;
         cout<<"Milyen szot szeretnel hozzaadni? "<<endl;
         cin>>userWordAdd;
@@ -154,7 +182,8 @@ void fileWrite(vector<Dictionary> &v){
         }
         cout<<"Szeretnel meg szot hozzaadni? (y/n)"<<endl;
         cin>>moreWords;
-    }while(moreWords=='y');
+        system("cls");
+    }
 
     ofstream dict2("dict.txt");
     for(int i=0; i<v.size(); i++){
